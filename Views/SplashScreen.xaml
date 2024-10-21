@@ -1,0 +1,19 @@
+﻿<models:BaseWindow x:Class="Editty.Views.SplashScreen"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Editty.Views"
+        xmlns:models="clr-namespace:Editty.Models"
+        mc:Ignorable="d">
+    <Grid>
+        <StackPanel Name="splash" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock Text="Welcome To"
+                       TextAlignment="Center"
+                       FontSize="30px"
+                       Foreground="#3b7016"
+                       FontWeight="Bold"/>
+            <Image Source="../images/logo/logo.png" Height="150px"></Image>
+        </StackPanel>
+    </Grid>
+</models:BaseWindow>
