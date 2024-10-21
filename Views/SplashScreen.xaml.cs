@@ -31,7 +31,7 @@ namespace Editty.Views
         {
             DoubleAnimation fadeIn = new DoubleAnimation(0, 1, TimeSpan.FromSeconds(1));
             fadeIn.Completed += FadeIn_Completed;
-            splash.BeginAnimation(TextBlock.OpacityProperty, fadeIn);
+            splash.BeginAnimation(OpacityProperty, fadeIn);
 
         }
 
@@ -41,7 +41,7 @@ namespace Editty.Views
             fadeOut.BeginTime = TimeSpan.FromSeconds(2);
 
             fadeOut.Completed += FadeOut_Completed;
-            splash.BeginAnimation(TextBlock.OpacityProperty, fadeOut);
+            splash.BeginAnimation(OpacityProperty, fadeOut);
         }
 
         private void FadeOut_Completed(object sender, EventArgs e)
@@ -51,7 +51,7 @@ namespace Editty.Views
 
             DoubleAnimation splashDissapear = new DoubleAnimation(1, 0, TimeSpan.FromSeconds(1));
             splashDissapear.Completed += (s, ev) => this.Hide();;
-            this.BeginAnimation(Window.OpacityProperty, splashDissapear);
+            this.BeginAnimation(OpacityProperty, splashDissapear);
         }
 
     }

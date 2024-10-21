@@ -8,7 +8,7 @@
         xmlns:controls="clr-namespace:Editty.UserControls"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" x:Class="Editty.Views.EditorWindow"
         mc:Ignorable="d"
-        >
+        Width="800" Height="600">
     <Window.Resources>
         <Style TargetType="TextBlock">
             <Setter Property="Margin" Value="0 20 0 3"/>
@@ -33,33 +33,41 @@
                 </MenuItem>
             </MenuItem>
         </Menu>
-        <ToolBar Grid.Row="1">
-            <Button>
-                <StackPanel Orientation="Horizontal">
-                    <Image Source="../images/icons/text.png" Width="20"/>
-                    <TextBlock Margin="10 0 0 0"><Run Text="Текст"/></TextBlock>
-                </StackPanel>
-            </Button>
-            <Button>
-                <StackPanel Orientation="Horizontal">
-                    <Image Source="../images/icons/image.png" Width="20"/>
-                    <TextBlock Margin="10 0 0 0"><Run Text="Медиа"/></TextBlock>
-                </StackPanel>
-            </Button>
-            <Button>
-                <StackPanel Orientation="Horizontal">
-                    <Image Source="../images/icons/list.png" Width="20"/>
-                    <TextBlock Margin="10 0 0 0"><Run Text="Списки"/></TextBlock>
-                </StackPanel>
-            </Button>
-        </ToolBar>
+        <ToolBarTray Grid.Row="1" IsLocked="True">
+            <ToolBar>
+                <Button>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="../images/icons/text.png" Width="20"/>
+                        <TextBlock Margin="10 0 0 0"><Run Text="Текст"/></TextBlock>
+                    </StackPanel>
+                </Button>
+                <Separator/>
+                <Button>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="../images/icons/image.png" Width="20"/>
+                        <TextBlock Margin="10 0 0 0"><Run Text="Медиа"/></TextBlock>
+                    </StackPanel>
+                </Button>
+                <Separator/>
+                <Button>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="../images/icons/list.png" Width="20"/>
+                        <TextBlock Margin="10 0 0 0"><Run Text="Списки"/></TextBlock>
+                    </StackPanel>
+                </Button>
+            </ToolBar>
+        </ToolBarTray>
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="150"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <controls:TextFormattingControl></controls:TextFormattingControl>
-            <RichTextBox Grid.Column="1" Margin="10" VerticalScrollBarVisibility="Visible" BorderBrush="Transparent" Background="#FFFFFF"/>
+            <controls:TextFormattingControl x:Name="textFormattingControl" Background="#f1f1f1"
+                                            MouseEnter="TextFormattingControl_MouseEnter"
+                                            MouseLeave="TextFormattingControl_MouseLeave"></controls:TextFormattingControl>
+            <RichTextBox x:Name="textBox" Grid.Column="1" VerticalScrollBarVisibility="Visible" Background="#FFFFFF" Padding="10"
+                         GotFocus="textBox_GotFocus"
+                         LostFocus="textBox_LostFocus"/>
         </Grid>
     </Grid>
 </models:BaseWindow>
