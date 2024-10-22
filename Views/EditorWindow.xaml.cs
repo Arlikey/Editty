@@ -1,4 +1,6 @@
-﻿using Editty.Models;
+﻿using Editty.Helpers;
+using Editty.Models;
+using Editty.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,37 +23,31 @@ namespace Editty.Views
     /// </summary>
     public partial class EditorWindow : BaseWindow
     {
-        public Editor editor;
         public EditorWindow()
         {
             InitializeComponent();
-            editor = new Editor();
-            DataContext = editor;
+            this.DataContext = new EditorViewModel();
         }
 
         private void TextFormattingControl_MouseEnter(object sender, MouseEventArgs e)
         {
-            AnimationTimeline fadeIn = new ColorAnimation(Color.FromArgb(255, 230, 230, 230), TimeSpan.FromSeconds(0.25));
-            textFormattingControl.Background.BeginAnimation(SolidColorBrush.ColorProperty, fadeIn);
+            AnimationHelper.BackgroundColorFade(textFormattingControl, Color.FromArgb(255, 230, 230, 230), 0.25);
         }
 
         private void TextFormattingControl_MouseLeave(object sender, MouseEventArgs e)
         {
-            AnimationTimeline fadeIn = new ColorAnimation(Color.FromArgb(255, 241, 241, 241), TimeSpan.FromSeconds(0.25));
-            textFormattingControl.Background.BeginAnimation(SolidColorBrush.ColorProperty, fadeIn);
+            AnimationHelper.BackgroundColorFade(textFormattingControl, Color.FromArgb(255, 241, 241, 241), 0.25);
 
         }
 
         private void textBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            AnimationTimeline fadeIn = new ColorAnimation(Color.FromArgb(255, 246, 246, 246), TimeSpan.FromSeconds(0.25));
-            textBox.Background.BeginAnimation(SolidColorBrush.ColorProperty, fadeIn);
+            AnimationHelper.BackgroundColorFade(textBox, Color.FromArgb(255, 246, 246, 246), 0.25);
         }
 
         private void textBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            AnimationTimeline fadeIn = new ColorAnimation(Color.FromArgb(255, 255, 255, 255), TimeSpan.FromSeconds(0.25));
-            textBox.Background.BeginAnimation(SolidColorBrush.ColorProperty, fadeIn);
-        }
+            AnimationHelper.BackgroundColorFade(textBox, Color.FromArgb(255, 255, 255, 255), 0.25);
+        }   
     }
 }

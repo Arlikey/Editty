@@ -25,7 +25,7 @@
         <Menu VerticalAlignment="Top">
             <MenuItem Header="Файл">
                 <MenuItem Header="Создать файл" />
-                <MenuItem Header="Открыть файл" />
+                <MenuItem Header="Открыть файл" Command="{Binding OpenFileCommand}" CommandParameter="{Binding ElementName=textBox}" />
                 <Separator/>
                 <MenuItem Header="Сохранить файл" >
                     <MenuItem Header="Сохранить..."/>
