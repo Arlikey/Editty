@@ -9,6 +9,9 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" x:Class="Editty.Views.EditorWindow"
         mc:Ignorable="d"
         Width="800" Height="600">
+    <Window.InputBindings>
+        <KeyBinding Key="O" Modifiers="Ctrl" Command="{Binding OpenFileCommand}" CommandParameter="{Binding ElementName=textBox}"></KeyBinding>
+    </Window.InputBindings>
     <Window.Resources>
         <Style TargetType="TextBlock">
             <Setter Property="Margin" Value="0 20 0 3"/>
@@ -25,7 +28,7 @@
         <Menu VerticalAlignment="Top">
             <MenuItem Header="Файл">
                 <MenuItem Header="Создать файл" />
-                <MenuItem Header="Открыть файл" Command="{Binding OpenFileCommand}" CommandParameter="{Binding ElementName=textBox}" />
+                <MenuItem Header="Открыть файл" InputGestureText="Ctrl+O" Command="{Binding OpenFileCommand}" CommandParameter="{Binding ElementName=textBox}"/>
                 <Separator/>
                 <MenuItem Header="Сохранить файл" >
                     <MenuItem Header="Сохранить..."/>
@@ -66,6 +69,7 @@
                                             MouseEnter="TextFormattingControl_MouseEnter"
                                             MouseLeave="TextFormattingControl_MouseLeave"></controls:TextFormattingControl>
             <RichTextBox x:Name="textBox" Grid.Column="1" VerticalScrollBarVisibility="Visible" Background="#FFFFFF" Padding="10"
+                         DataContextChanged="textBox_DataContextChanged"
                          GotFocus="textBox_GotFocus"
                          LostFocus="textBox_LostFocus"/>
         </Grid>

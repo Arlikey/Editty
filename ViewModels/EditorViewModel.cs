@@ -8,12 +8,13 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 
 namespace Editty.ViewModels
 {
-    class EditorViewModel : INotifyPropertyChanged
+    public class EditorViewModel : INotifyPropertyChanged
     {
         public IEnumerable<FontFamily> FontFamilies { get; set; }
         private TextDocument _document;
@@ -30,7 +31,7 @@ namespace Editty.ViewModels
 
         public ICommand OpenFileCommand { get; }
 
-        public string Content
+        public FlowDocument Content
         {
             get => _document.Content;
             set
@@ -42,16 +43,13 @@ namespace Editty.ViewModels
 
         private async void OpenFileAsync(object parameter)
         {
-            await _fileHandler.OpenFileAsync(parameter);
+            await _fileHandler.OpenFileAsync(parameter, _document);
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string property = "")
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(property));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
         }
     }
 }

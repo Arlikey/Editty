@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Editty.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,6 @@ namespace Editty.Interfaces
 {
     interface IFileHandler
     {
-        public Task OpenFileAsync(object parameter);
+        public Task OpenFileAsync(object parameter, TextDocument document);
     }
 }

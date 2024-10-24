@@ -48,6 +48,14 @@ namespace Editty.Views
         private void textBox_LostFocus(object sender, RoutedEventArgs e)
         {
             AnimationHelper.BackgroundColorFade(textBox, Color.FromArgb(255, 255, 255, 255), 0.25);
-        }   
+        }
+
+        private void textBox_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (sender is RichTextBox richTextBox && e.NewValue is EditorViewModel viewModel)
+            {
+                richTextBox.Document = viewModel.Content;
+            }
+        }
     }
 }

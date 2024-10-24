@@ -17,15 +17,15 @@ namespace Editty.Models
     public class FileHandler : IFileHandler
     {
         private string currentFilePath;
-        public async Task OpenFileAsync(object parameter)
+
+        public async Task OpenFileAsync(object parameter, TextDocument document)
         {
             if (parameter is RichTextBox richTextBox)
             {
                 OpenFileDialog openFileDialog = new OpenFileDialog
                 {
-                    Filter = "All files (*.*)|*.*| Text Files (*.txt)|*.txt| Rich Text Format (*.rtf)|*.rtf| PDF Files (*.pdf)|*.pdf"
+                    Filter = "All files (*.*)|*.*|Text Files (*.txt)|*.txt|Rich Text Format (*.rtf)|*.rtf|PDF Files (*.pdf)|*.pdf"
                 };
-
                 if (openFileDialog.ShowDialog() == true)
                 {
                     string filePath = openFileDialog.FileName;
@@ -34,13 +34,13 @@ namespace Editty.Models
                     switch (fileExtension)
                     {
                         case ".txt":
-                            await OpenTxtFileAsync(richTextBox, filePath);
+                            await OpenTxtFileAsync(richTextBox, filePath, document);
                             break;
                         case ".rtf":
-                            await OpenRtfFileAsync(richTextBox, filePath);
+                            await OpenRtfFileAsync(richTextBox, filePath, document);
                             break;
                         case ".pdf":
-                            await OpenPdfFileAsync(richTextBox, filePath);
+                            await OpenPdfFileAsync(richTextBox, filePath, document);
                             break;
                         default:
                             MessageBox.Show("Неподдерживаемый формат файла.");
@@ -50,27 +50,31 @@ namespace Editty.Models
                 }
             }
         }
-        private async Task OpenTxtFileAsync(RichTextBox richTextBox, string filePath)
+
+        private async Task OpenTxtFileAsync(RichTextBox richTextBox, string filePath, TextDocument document)
         {
             string text = await File.ReadAllTextAsync(filePath);
-            richTextBox.Document.Blocks.Clear();
-            richTextBox.Document.Blocks.Add(new Paragraph(new Run(text)));
+            document.Content.Blocks.Clear();
+            document.Content.Blocks.Add(new Paragraph(new Run(text)));
         }
-        private async Task OpenRtfFileAsync(RichTextBox richTextBox, string filePath)
-        {
-            /*string content = await File.ReadAllTextAsync(filePath);
-            using (MemoryStream stream = new MemoryStream(Encoding.Default.GetBytes(content)))
-            {
-                richTextBox.Selection.Load(stream, DataFormats.Rtf);
-            }*/
 
-            TextRange rtfRange = new TextRange(richTextBox.Document.ContentStart, richTextBox.Document.ContentEnd);
-            using (FileStream rtfStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
-            {
-                rtfRange.Load(rtfStream, DataFormats.Rtf);
-            }
+        private async Task OpenRtfFileAsync(RichTextBox richTextBox, string filePath, TextDocument document)
+        {
+            await Task.Run(() =>
+            {    
+                using (FileStream rtfStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+                {
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        TextRange textRange = new TextRange(document.Content.ContentStart, document.Content.ContentEnd);
+                        textRange.Load(rtfStream, DataFormats.Rtf);
+                    });
+                }
+                GC.Collect();
+            });
         }
-        private async Task OpenPdfFileAsync(RichTextBox richTextBox, string filePath)
+
+        private async Task OpenPdfFileAsync(RichTextBox richTextBox, string filePath, TextDocument document)
         {
             StringBuilder pdfText = new StringBuilder();
             await Task.Run(() =>
@@ -89,12 +93,10 @@ namespace Editty.Models
 
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    richTextBox.Document.Blocks.Clear();
-                    richTextBox.Document.Blocks.Add(new Paragraph(new Run(pdfText.ToString())));
+                    document.Content.Blocks.Clear();
+                    document.Content.Blocks.Add(new Paragraph(new Run(pdfText.ToString())));
                 });
             });
-
-
         }
     }
 }
