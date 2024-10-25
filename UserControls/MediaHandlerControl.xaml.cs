@@ -16,14 +16,13 @@ using System.Windows.Shapes;
 namespace Editty.UserControls
 {
     /// <summary>
-    /// Interaction logic for TextFormattingControl.xaml
+    /// Interaction logic for MediaHandlerControl.xaml
     /// </summary>
-    public partial class TextFormattingControl : BaseControl
+    public partial class MediaHandlerControl : UserControl
     {
-        public TextFormattingControl()
+        public MediaHandlerControl()
         {
             InitializeComponent();
         }
-
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Editty.Helpers;
 using Editty.Models;
+using Editty.UserControls;
 using Editty.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -26,18 +27,8 @@ namespace Editty.Views
         public EditorWindow()
         {
             InitializeComponent();
-            this.DataContext = new EditorViewModel();
-        }
-
-        private void TextFormattingControl_MouseEnter(object sender, MouseEventArgs e)
-        {
-            AnimationHelper.BackgroundColorFade(textFormattingControl, Color.FromArgb(255, 230, 230, 230), 0.25);
-        }
-
-        private void TextFormattingControl_MouseLeave(object sender, MouseEventArgs e)
-        {
-            AnimationHelper.BackgroundColorFade(textFormattingControl, Color.FromArgb(255, 241, 241, 241), 0.25);
-
+            this.DataContext = new EditorViewModel(textBox);
+            mainControl.Content = new TextFormattingControl();
         }
 
         private void textBox_GotFocus(object sender, RoutedEventArgs e)
@@ -56,6 +47,21 @@ namespace Editty.Views
             {
                 richTextBox.Document = viewModel.Content;
             }
+        }
+
+        private void listHandlerButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void mediaHandlerButton_Click(object sender, RoutedEventArgs e)
+        {
+            mainControl.Content = new MediaHandlerControl();
+        }
+
+        private void textFormattingButton_Click(object sender, RoutedEventArgs e)
+        {
+            mainControl.Content = new TextFormattingControl();
         }
     }
 }

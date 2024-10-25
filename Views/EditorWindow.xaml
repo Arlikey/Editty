@@ -10,7 +10,8 @@
         mc:Ignorable="d"
         Width="800" Height="600">
     <Window.InputBindings>
-        <KeyBinding Key="O" Modifiers="Ctrl" Command="{Binding OpenFileCommand}" CommandParameter="{Binding ElementName=textBox}"></KeyBinding>
+        <KeyBinding Key="O" Modifiers="Ctrl" Command="{Binding OpenFileCommand}"></KeyBinding>
+        <KeyBinding Key="S" Modifiers="Ctrl" Command="{Binding SaveFileCommand}"></KeyBinding>
     </Window.InputBindings>
     <Window.Resources>
         <Style TargetType="TextBlock">
@@ -28,33 +29,33 @@
         <Menu VerticalAlignment="Top">
             <MenuItem Header="Файл">
                 <MenuItem Header="Создать файл" />
-                <MenuItem Header="Открыть файл" InputGestureText="Ctrl+O" Command="{Binding OpenFileCommand}" CommandParameter="{Binding ElementName=textBox}"/>
+                <MenuItem Header="Открыть файл" InputGestureText="Ctrl+O" Command="{Binding OpenFileCommand}"/>
                 <Separator/>
                 <MenuItem Header="Сохранить файл" >
-                    <MenuItem Header="Сохранить..."/>
+                    <MenuItem Header="Сохранить..." InputGestureText="Ctrl+S" Command="{Binding SaveFileCommand}"/>
                     <MenuItem Header="Сохранить как"/>
                 </MenuItem>
             </MenuItem>
         </Menu>
         <ToolBarTray Grid.Row="1" IsLocked="True">
             <ToolBar>
-                <Button>
+                <Button x:Name="textFormattingButton" Click="textFormattingButton_Click">
                     <StackPanel Orientation="Horizontal">
-                        <Image Source="../images/icons/text.png" Width="20"/>
+                        <Image Source="../images/icons/text-group.png" Width="20"/>
                         <TextBlock Margin="10 0 0 0"><Run Text="Текст"/></TextBlock>
                     </StackPanel>
                 </Button>
                 <Separator/>
-                <Button>
+                <Button x:Name="mediaHandlerButton" Click="mediaHandlerButton_Click">
                     <StackPanel Orientation="Horizontal">
-                        <Image Source="../images/icons/image.png" Width="20"/>
+                        <Image Source="../images/icons/image-group.png" Width="20"/>
                         <TextBlock Margin="10 0 0 0"><Run Text="Медиа"/></TextBlock>
                     </StackPanel>
                 </Button>
                 <Separator/>
-                <Button>
+                <Button x:Name="listHandlerButton" Click="listHandlerButton_Click">
                     <StackPanel Orientation="Horizontal">
-                        <Image Source="../images/icons/list.png" Width="20"/>
+                        <Image Source="../images/icons/list-group.png" Width="20"/>
                         <TextBlock Margin="10 0 0 0"><Run Text="Списки"/></TextBlock>
                     </StackPanel>
                 </Button>
@@ -65,14 +66,11 @@
                 <ColumnDefinition Width="150"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <controls:TextFormattingControl x:Name="textFormattingControl" Background="#f1f1f1"
-                                            MouseEnter="TextFormattingControl_MouseEnter"
-                                            MouseLeave="TextFormattingControl_MouseLeave"></controls:TextFormattingControl>
+            <controls:BaseControl x:Name="mainControl"></controls:BaseControl>
             <RichTextBox x:Name="textBox" Grid.Column="1" VerticalScrollBarVisibility="Visible" Background="#FFFFFF" Padding="10"
                          DataContextChanged="textBox_DataContextChanged"
                          GotFocus="textBox_GotFocus"
                          LostFocus="textBox_LostFocus"/>
-            <controls:LoadingControl x:Name="progressBar" Grid.Column="1" Visibility="Hidden"/>
         </Grid>
     </Grid>
 </models:BaseWindow>
