@@ -21,9 +21,6 @@ namespace Editty.Models
 {
     public class FileHandler : IFileHandler
     {
-        private string currentFilePath = "temp.rtf";
-        private string currentFileExtension = ".rtf";
-
         public async Task<bool> OpenFileAsync(object parameter, TextDocument document)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog
@@ -47,13 +44,13 @@ namespace Editty.Models
                 {
                     case ".txt":
                         await OpenTxtFileAsync(filePath, document);
-                        currentFilePath = filePath;
-                        currentFileExtension = fileExtension;
+                        document.FilePath = filePath;
+                        document.FileExtension = fileExtension;
                         break;
                     case ".rtf":
                         await OpenRtfFileAsync(filePath, document);
-                        currentFilePath = filePath;
-                        currentFileExtension = fileExtension;
+                        document.FilePath = filePath;
+                        document.FileExtension = fileExtension;
                         break;
                     case ".pdf":
                         await OpenPdfFileAsync(filePath, document);
@@ -63,7 +60,6 @@ namespace Editty.Models
                         loadingLabel.Visibility = Visibility.Collapsed;
                         return false;
                 }
-
                 loadingLabel.Visibility = Visibility.Collapsed;
                 return true;
             }
@@ -124,13 +120,13 @@ namespace Editty.Models
 
         public async Task SaveFileAsync(TextDocument document)
         {
-            switch (currentFileExtension.ToLower())
+            switch (document.FileExtension.ToLower())
             {
                 case ".txt":
-                    await SaveTxtFileAsync(currentFilePath, document);
+                    await SaveTxtFileAsync(document.FilePath, document);
                     break;
                 case ".rtf":
-                    await SaveRtfFileAsync(currentFilePath, document);
+                    await SaveRtfFileAsync(document.FilePath, document);
                     break;
                 /*case ".pdf":
                     await SavePdfFileAsync(filePath, document);

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Editty.Views"
         xmlns:models="clr-namespace:Editty.Models"
         mc:Ignorable="d">
-    <Grid>
+    <Grid Background="#f0f0f0">
         <StackPanel Name="splash" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock Text="Welcome To"
                        TextAlignment="Center"

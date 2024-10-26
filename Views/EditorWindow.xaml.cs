@@ -64,5 +64,13 @@ namespace Editty.Views
         {
             mainControl.Content = new TextFormattingControl();
         }
+
+        private void textBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (DataContext is EditorViewModel viewModel)
+            {
+                viewModel.IsDocumentChanged = true;
+            }
+        }
     }
 }

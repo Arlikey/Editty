@@ -15,6 +15,7 @@ namespace Editty.Models
 {
     public class ImageHandler
     {
+        double maxImageWidth = 550;
         public void InsertImage(RichTextBox richTextBox)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog
@@ -24,14 +25,28 @@ namespace Editty.Models
 
             if (openFileDialog.ShowDialog() == true)
             {
-                var insertImage = new Image()
+                var image = new Image
                 {
-                    Source = new BitmapImage(new Uri(openFileDialog.FileName)),
-                    Stretch = Stretch.Uniform,
-                    Width = richTextBox.ActualWidth - 50
+                    Source = new BitmapImage(new Uri(openFileDialog.FileName))
                 };
 
-                var insertImageUIContainer = new BlockUIContainer(insertImage);
+                var bitmap = (BitmapImage)image.Source;
+                double originalWidth = bitmap.PixelWidth;
+                double originalHeight = bitmap.PixelHeight;
+
+                if (originalWidth > maxImageWidth)
+                {
+                    double scale = maxImageWidth / originalWidth;
+                    image.Width = maxImageWidth;
+                    image.Height = originalHeight * scale;
+                }
+                else
+                {
+                    image.Width = originalWidth;
+                    image.Height = originalHeight;
+                }
+
+                var insertImageUIContainer = new BlockUIContainer(image);
 
                 if (richTextBox.CaretPosition.Paragraph == null)
                 {

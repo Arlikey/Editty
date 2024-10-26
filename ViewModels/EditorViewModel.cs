@@ -5,6 +5,7 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -60,17 +61,39 @@ namespace Editty.ViewModels
                 OnPropertyChanged(nameof(DocumentIsOpen));
             }
         }
+        public string FileName
+        {
+            get => _isDocumentChanged ? $"{Path.GetFileName(_document.FilePath)}*" : Path.GetFileName(_document.FilePath);
+            set
+            {
+                _document.FileName = value;
+                OnPropertyChanged(nameof(FileName));
+            }
+        }
+        private bool _isDocumentChanged;
+        public bool IsDocumentChanged
+        {
+            get => _isDocumentChanged;
+            set
+            {
+                _isDocumentChanged = value;
+                OnPropertyChanged(nameof(IsDocumentChanged));
+                OnPropertyChanged(nameof(FileName));
+            }
+        }
         private bool CanExecute(object parameter) => DocumentIsOpen;
         public RichTextBox TextBox { get; set; }
         private async void OpenFileAsync(object parameter)
         {
             DocumentIsOpen = await _fileHandler.OpenFileAsync(parameter, _document);
+            FileName = Path.GetFileName(_document.FilePath);
+            IsDocumentChanged = false;
         }
         private async void SaveFileAsync(object parameter)
         {
             await _fileHandler.SaveFileAsync(_document);
+            IsDocumentChanged = false;
         }
-
         private void InsertImage(object parameter)
         {
             if (parameter is RichTextBox richTextBox)

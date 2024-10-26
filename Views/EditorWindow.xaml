@@ -13,21 +13,14 @@
         <KeyBinding Key="O" Modifiers="Ctrl" Command="{Binding OpenFileCommand}"></KeyBinding>
         <KeyBinding Key="S" Modifiers="Ctrl" Command="{Binding SaveFileCommand}"></KeyBinding>
     </Window.InputBindings>
-    <Window.Resources>
-        <Style TargetType="TextBlock">
-            <Setter Property="Margin" Value="0 20 0 3"/>
-            <Setter Property="FontFamily" Value="Segoe UI"/>
-            <Setter Property="FontSize" Value="13"/>
-        </Style>
-    </Window.Resources>
-    <Grid>
+    <Grid Background="#f1f1f1">
         <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
+            <RowDefinition Height="30"/>
             <RowDefinition Height="50"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Menu VerticalAlignment="Top">
-            <MenuItem Header="Файл">
+        <Menu VerticalAlignment="Top" Background="#ffffff">
+            <MenuItem Header="Файл" Margin="0" Height="30">
                 <MenuItem Header="Создать файл" />
                 <MenuItem Header="Открыть файл" InputGestureText="Ctrl+O" Command="{Binding OpenFileCommand}"/>
                 <Separator/>
@@ -61,24 +54,40 @@
                 </Button>
             </ToolBar>
         </ToolBarTray>
-        <Grid Grid.Row="2" Background="#d6d6d6">
+        <Grid Grid.Row="2" Background="#dedede" Margin="0 10 0 0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="150"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <controls:BaseAsideControl x:Name="mainControl"></controls:BaseAsideControl>
-            <Border Grid.Column="1" ClipToBounds="True">
-                <Border.Effect>
-                    <DropShadowEffect BlurRadius="8" ShadowDepth="0" Color="LightGray"/>
-                </Border.Effect>
-                <RichTextBox x:Name="textBox" Grid.Column="1"
-                             Visibility="{Binding DocumentIsOpen, Converter={StaticResource BooleanToVisibilityConverter}}"
-                             VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible"
-                             Background="#FFFFFF" Padding="40 20 20 10"
-                             DataContextChanged="textBox_DataContextChanged" MaxWidth="875"
-                             GotFocus="textBox_GotFocus"
-                             LostFocus="textBox_LostFocus"/>
-            </Border>
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Stretch" Background="#e8e8e8"
+                            Visibility="{Binding DocumentIsOpen, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Border BorderThickness="0 2 0 0">
+                        <Border.BorderBrush>
+                            <SolidColorBrush Color="#8bc34a" Opacity="1"/>
+                        </Border.BorderBrush>
+                        <TextBlock x:Name="filePath" Text="{Binding FileName}" VerticalAlignment="Center"
+                                   Margin="10 0 10 0" FontSize="15"></TextBlock>
+                    </Border>
+                </StackPanel>
+                <Border Grid.Row="1" ClipToBounds="True">
+                    <Border.Effect>
+                        <DropShadowEffect BlurRadius="8" ShadowDepth="0" Color="LightGray"/>
+                    </Border.Effect>
+                    <RichTextBox x:Name="textBox" Grid.Column="1"
+                                 Visibility="{Binding DocumentIsOpen, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                 VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible"
+                                 Background="#FFFFFF" Padding="40 20 20 10" MaxWidth="875"
+                                 DataContextChanged="textBox_DataContextChanged" TextChanged="textBox_TextChanged"
+                                 GotFocus="textBox_GotFocus"
+                                 LostFocus="textBox_LostFocus"/>
+                </Border>
+            </Grid>
             <controls:LoadingLabelControl x:Name="loadingLabel" Grid.Column="1" Visibility="Collapsed"></controls:LoadingLabelControl>
         </Grid>
     </Grid>
