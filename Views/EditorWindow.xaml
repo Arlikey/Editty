@@ -61,16 +61,17 @@
                 </Button>
             </ToolBar>
         </ToolBarTray>
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="2" Background="#d6d6d6">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="150"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <controls:BaseControl x:Name="mainControl"></controls:BaseControl>
-            <RichTextBox x:Name="textBox" Grid.Column="1" VerticalScrollBarVisibility="Visible" Background="#FFFFFF" Padding="10"
-                         DataContextChanged="textBox_DataContextChanged"
+            <controls:BaseAsideControl x:Name="mainControl"></controls:BaseAsideControl>
+            <RichTextBox x:Name="textBox" Grid.Column="1" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible" Background="#FFFFFF" Padding="40 20 20 10"
+                         DataContextChanged="textBox_DataContextChanged" MaxWidth="875"
                          GotFocus="textBox_GotFocus"
                          LostFocus="textBox_LostFocus"/>
+            <controls:LoadingLabelControl x:Name="loadingLabel" Grid.Column="1" Visibility="Collapsed"></controls:LoadingLabelControl>
         </Grid>
     </Grid>
 </models:BaseWindow>

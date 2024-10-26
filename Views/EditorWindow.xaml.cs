@@ -29,6 +29,7 @@ namespace Editty.Views
             InitializeComponent();
             this.DataContext = new EditorViewModel(textBox);
             mainControl.Content = new TextFormattingControl();
+            textBox.Document.PageWidth = 800;
         }
 
         private void textBox_GotFocus(object sender, RoutedEventArgs e)

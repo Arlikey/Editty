@@ -35,6 +35,11 @@ namespace Editty.Models
                 string filePath = openFileDialog.FileName;
                 string fileExtension = System.IO.Path.GetExtension(filePath).ToLower();
 
+                var loadingLabel = Application.Current.MainWindow.FindName("loadingLabel") as LoadingLabelControl;
+
+                loadingLabel.Visibility = Visibility.Visible;
+                await Task.Delay(25);
+
                 switch (fileExtension)
                 {
                     case ".txt":
@@ -54,7 +59,8 @@ namespace Editty.Models
                         MessageBox.Show("Неподдерживаемый формат файла.");
                         break;
                 }
-                
+
+                loadingLabel.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -156,10 +162,8 @@ namespace Editty.Models
                     Document pdfDocument = new Document(pdfDoc);
                     string text = new TextRange(document.ContentStart, document.ContentEnd).Text;
 
-                    // Добавляем текст в PDF
                     pdfDocument.Add(new Paragraph(text));
 
-                    // Закрываем документ
                     pdfDocument.Close();
                 }
             });

@@ -21,7 +21,7 @@ namespace Editty.ViewModels
     public class EditorViewModel : INotifyPropertyChanged
     {
         public IEnumerable<FontFamily> FontFamilies { get; set; }
-        
+
         private TextDocument _document;
         private FileHandler _fileHandler;
         private ImageHandler _imageHandler;
@@ -56,6 +56,7 @@ namespace Editty.ViewModels
         private async void OpenFileAsync(object parameter)
         {
             await _fileHandler.OpenFileAsync(parameter, _document);
+
         }
 
         private async void SaveFileAsync(object parameter)

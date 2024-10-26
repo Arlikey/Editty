@@ -10,9 +10,9 @@ using System.Windows.Media;
 
 namespace Editty.UserControls
 {
-    public class BaseControl : UserControl
+    public class BaseAsideControl : UserControl
     {
-        public BaseControl()
+        public BaseAsideControl()
         {
             Background = new SolidColorBrush(Color.FromArgb(255, 241, 241, 241));
             MouseEnter += BaseControl_MouseEnter;
