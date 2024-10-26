@@ -10,6 +10,6 @@ namespace Editty.Interfaces
 {
     interface IFileHandler
     {
-        public Task OpenFileAsync(object parameter, TextDocument document);
+        public Task<bool> OpenFileAsync(object parameter, TextDocument document);
     }
 }

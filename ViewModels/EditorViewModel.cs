@@ -25,7 +25,6 @@ namespace Editty.ViewModels
         private TextDocument _document;
         private FileHandler _fileHandler;
         private ImageHandler _imageHandler;
-
         public EditorViewModel(RichTextBox textBox)
         {
             FontFamilies = Fonts.SystemFontFamilies;
@@ -35,8 +34,8 @@ namespace Editty.ViewModels
             _imageHandler = new ImageHandler();
 
             OpenFileCommand = new RelayCommand(OpenFileAsync);
-            SaveFileCommand = new RelayCommand(SaveFileAsync);
-            InsertImageCommand = new RelayCommand(InsertImage);
+            SaveFileCommand = new RelayCommand(SaveFileAsync, CanExecute);
+            InsertImageCommand = new RelayCommand(InsertImage, CanExecute);
         }
 
         public ICommand OpenFileCommand { get; }
@@ -52,13 +51,21 @@ namespace Editty.ViewModels
                 OnPropertyChanged(nameof(Content));
             }
         }
+        public bool DocumentIsOpen
+        {
+            get => _document.IsOpen;
+            set
+            {
+                _document.IsOpen = value;
+                OnPropertyChanged(nameof(DocumentIsOpen));
+            }
+        }
+        private bool CanExecute(object parameter) => DocumentIsOpen;
         public RichTextBox TextBox { get; set; }
         private async void OpenFileAsync(object parameter)
         {
-            await _fileHandler.OpenFileAsync(parameter, _document);
-
+            DocumentIsOpen = await _fileHandler.OpenFileAsync(parameter, _document);
         }
-
         private async void SaveFileAsync(object parameter)
         {
             await _fileHandler.SaveFileAsync(_document);

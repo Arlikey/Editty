@@ -24,7 +24,7 @@ namespace Editty.Models
         private string currentFilePath = "temp.rtf";
         private string currentFileExtension = ".rtf";
 
-        public async Task OpenFileAsync(object parameter, TextDocument document)
+        public async Task<bool> OpenFileAsync(object parameter, TextDocument document)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog
             {
@@ -35,9 +35,12 @@ namespace Editty.Models
                 string filePath = openFileDialog.FileName;
                 string fileExtension = System.IO.Path.GetExtension(filePath).ToLower();
 
+
+                //  Получаем элемент для отображения к загрузки
                 var loadingLabel = Application.Current.MainWindow.FindName("loadingLabel") as LoadingLabelControl;
 
                 loadingLabel.Visibility = Visibility.Visible;
+                //  Небольшая заддержка перед тем как основной поток заблокируется, чтобы успел отобразиться элемент
                 await Task.Delay(25);
 
                 switch (fileExtension)
@@ -57,11 +60,18 @@ namespace Editty.Models
                         break;
                     default:
                         MessageBox.Show("Неподдерживаемый формат файла.");
-                        break;
+                        loadingLabel.Visibility = Visibility.Collapsed;
+                        return false;
                 }
 
                 loadingLabel.Visibility = Visibility.Collapsed;
+                return true;
             }
+            if(!document.IsOpen)
+            {
+                return false;
+            }
+            return true;
         }
 
         private async Task OpenTxtFileAsync(string filePath, TextDocument document)
