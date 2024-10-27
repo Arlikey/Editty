@@ -36,6 +36,7 @@
                     <MenuItem Header="Сохранить как" InputGestureText="Ctrl+Shift+S" Command="{Binding SaveAsFileCommand}"/>
                 </MenuItem>
             </MenuItem>
+            <MenuItem Header="Поиск" Height="30" Command="{Binding FindSubstringCommand}"></MenuItem>
         </Menu>
         <ToolBarTray Grid.Row="1" IsLocked="True">
             <ToolBar>

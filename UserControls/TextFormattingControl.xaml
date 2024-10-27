@@ -21,29 +21,32 @@
 
                 <!--    Font family     -->
                 <TextBlock Margin="0 0 0 3">Шрифт :</TextBlock>
-                <ComboBox ItemsSource="{Binding Path=FontFamilies}"></ComboBox>
+                <ComboBox ItemsSource="{Binding Path=FontFamilies}" SelectedIndex="1"></ComboBox>
 
                 <!--    Font size     -->
                 <TextBlock>Размер :</TextBlock>
-                <materialDesign:NumericUpDown Minimum="8" Maximum="72"></materialDesign:NumericUpDown>
+                <materialDesign:NumericUpDown Minimum="8" Maximum="72" Value="11"></materialDesign:NumericUpDown>
 
                 <!--    Font style     -->
                 <TextBlock>Стили :</TextBlock>
                 <StackPanel Orientation="Horizontal" Margin="1 5 0 0" Height="35">
-                    <Button Width="48" Margin="2 0 10 0" Padding="0" Foreground="Black" FontWeight="Bold" FontSize="18">
+                    <Button Width="48" Margin="2 0 10 0" Padding="0" Foreground="Black" FontWeight="Bold" FontSize="18"
+                            Command="{Binding ToggleBoldCommand}">
                         <Button.ToolTip>Bold</Button.ToolTip>
                         <TextBlock Text="B" Margin="0"/>
                     </Button>
-                    <Button Width="48" Margin="1 0 10 0" Padding="0" FontSize="18" FontStyle="Italic">
+                    <Button Width="48" Margin="1 0 10 0" Padding="0" FontSize="18" FontStyle="Italic"
+                            Command="{Binding ToggleItalicCommand}">
                         <Button.ToolTip>Italic</Button.ToolTip>
                         <TextBlock Text="I" Margin="0"/>
                     </Button>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="1 5 0 0" Height="35">
-                    <Button Width="48" Margin="2 0 10 0" Padding="0" Foreground="Black" FontSize="18">
-                        <Button.ToolTip>Underline</Button.ToolTip>
-                        <TextBlock Text="U" Margin="0" TextDecorations="Underline"/>
-                    </Button>
+                    <ToggleButton Width="48" Margin="2 0 10 0" Padding="0" Foreground="Black" FontSize="18" Style="{x:Null}"
+                            Command="{Binding ToggleUnderlineCommand}">
+                        <ToggleButton.ToolTip>Underline</ToggleButton.ToolTip>
+                        <TextBlock Text="U" Margin="0" TextDecorations="Underline"/>    
+                    </ToggleButton>
                     <Button Width="48" Margin="1 0 10 0" Padding="0" Foreground="Black" FontSize="18">
                         <Button.ToolTip>Strikethrough</Button.ToolTip>
                         <TextBlock Text="ae" Margin="0" TextDecorations="Strikethrough"/>
@@ -51,11 +54,13 @@
                 </StackPanel>
 
                 <!--    Colors     -->
-                <TextBlock>Цвет :</TextBlock>
-                <RadioButton IsChecked="True" Margin="0 0 0 5">Текст</RadioButton>
-                <RadioButton>Фон</RadioButton>
+                <TextBlock>Цвет текста:</TextBlock>
+                <colorpicker:SquarePicker Margin="0 10 0 0"></colorpicker:SquarePicker>
+
+                <TextBlock>Цвет фона:</TextBlock>
                 <colorpicker:SquarePicker Margin="0 10 0 0"></colorpicker:SquarePicker>
             </StackPanel>
         </ScrollViewer>
     </Grid>
 </usercontrols:BaseAsideControl>
+    

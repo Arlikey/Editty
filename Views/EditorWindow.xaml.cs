@@ -24,12 +24,15 @@ namespace Editty.Views
     /// </summary>
     public partial class EditorWindow : BaseWindow
     {
+        private EditorViewModel _viewModel;
         public EditorWindow()
         {
             InitializeComponent();
-            this.DataContext = new EditorViewModel(textBox);
-            mainControl.Content = new TextFormattingControl();
+            _viewModel = new EditorViewModel(textBox);
+            this.DataContext = _viewModel;
+            mainControl.Content = new TextFormattingControl(_viewModel);
             textBox.Document.PageWidth = 800;
+            textBox.SelectionBrush = new SolidColorBrush(Color.FromArgb(255, 0, 171, 40));
         }
 
         private void textBox_GotFocus(object sender, RoutedEventArgs e)
@@ -62,7 +65,7 @@ namespace Editty.Views
 
         private void textFormattingButton_Click(object sender, RoutedEventArgs e)
         {
-            mainControl.Content = new TextFormattingControl();
+            mainControl.Content = new TextFormattingControl(_viewModel);
         }
 
         private void textBox_TextChanged(object sender, TextChangedEventArgs e)

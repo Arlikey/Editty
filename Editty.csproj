@@ -11,9 +11,12 @@
 
   <ItemGroup>
     <None Remove="images\icons\add-image.png" />
+    <None Remove="images\icons\back.png" />
     <None Remove="images\icons\image-group.png" />
     <None Remove="images\icons\list-group.png" />
     <None Remove="images\icons\list.png" />
+    <None Remove="images\icons\next.png" />
+    <None Remove="images\icons\search.png" />
     <None Remove="images\icons\text-group.png" />
     <None Remove="images\icons\text.png" />
     <None Remove="images\logo\logo.ico" />
@@ -29,8 +32,11 @@
 
   <ItemGroup>
     <Resource Include="images\icons\add-image.png" />
+    <Resource Include="images\icons\back.png" />
     <Resource Include="images\icons\image-group.png" />
     <Resource Include="images\icons\list-group.png" />
+    <Resource Include="images\icons\next.png" />
+    <Resource Include="images\icons\search.png" />
     <Resource Include="images\icons\text-group.png" />
     <Resource Include="images\logo\logo.ico" />
     <Resource Include="images\logo\logo.png" />
