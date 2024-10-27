@@ -21,9 +21,9 @@ namespace Editty.Models
         {
             Content = new FlowDocument();
             IsOpen = false;
-            FilePath = "temp.rtf";
-            FileExtension = ".rtf";
-            FileName = "temp.rtf";
+            FilePath = "";
+            FileExtension = "";
+            FileName = "";
             IsChanged = false;
         }
     }

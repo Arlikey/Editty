@@ -34,15 +34,18 @@ namespace Editty.ViewModels
             _fileHandler = new FileHandler();
             _imageHandler = new ImageHandler();
 
+            CreateFileCommand = new RelayCommand(CreateFileAsync);
             OpenFileCommand = new RelayCommand(OpenFileAsync);
             SaveFileCommand = new RelayCommand(SaveFileAsync, CanExecute);
+            SaveAsFileCommand = new RelayCommand(SaveAsFileAsync, CanExecute);
             InsertImageCommand = new RelayCommand(InsertImage, CanExecute);
         }
 
+        public ICommand CreateFileCommand { get; }
         public ICommand OpenFileCommand { get; }
         public ICommand SaveFileCommand { get; }
+        public ICommand SaveAsFileCommand { get; }
         public ICommand InsertImageCommand { get; }
-
         public FlowDocument Content
         {
             get => _document.Content;
@@ -83,15 +86,24 @@ namespace Editty.ViewModels
         }
         private bool CanExecute(object parameter) => DocumentIsOpen;
         public RichTextBox TextBox { get; set; }
+        private async void CreateFileAsync(object parameter)
+        {
+            DocumentIsOpen = await _fileHandler.CreateFileAsync(parameter, _document);
+            IsDocumentChanged = false;
+        }
         private async void OpenFileAsync(object parameter)
         {
             DocumentIsOpen = await _fileHandler.OpenFileAsync(parameter, _document);
-            FileName = Path.GetFileName(_document.FilePath);
             IsDocumentChanged = false;
         }
         private async void SaveFileAsync(object parameter)
         {
             await _fileHandler.SaveFileAsync(_document);
+            IsDocumentChanged = false;
+        }
+        private async void SaveAsFileAsync(object parameter)
+        {
+            await _fileHandler.SaveAsFileAsync(_document);
             IsDocumentChanged = false;
         }
         private void InsertImage(object parameter)

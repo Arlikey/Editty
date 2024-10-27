@@ -9,9 +9,16 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" x:Class="Editty.Views.EditorWindow"
         mc:Ignorable="d"
         Width="800" Height="600">
+    <Window.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="13"/>
+        </Style>
+    </Window.Resources>
     <Window.InputBindings>
         <KeyBinding Key="O" Modifiers="Ctrl" Command="{Binding OpenFileCommand}"></KeyBinding>
         <KeyBinding Key="S" Modifiers="Ctrl" Command="{Binding SaveFileCommand}"></KeyBinding>
+        <KeyBinding Key="N" Modifiers="Ctrl" Command="{Binding CreateFileCommand}"></KeyBinding>
+        <KeyBinding Key="S" Modifiers="Ctrl+Shift" Command="{Binding SaveAsFileCommand}"></KeyBinding>
     </Window.InputBindings>
     <Grid Background="#f1f1f1">
         <Grid.RowDefinitions>
@@ -21,12 +28,12 @@
         </Grid.RowDefinitions>
         <Menu VerticalAlignment="Top" Background="#ffffff">
             <MenuItem Header="Файл" Margin="0" Height="30">
-                <MenuItem Header="Создать файл" />
+                <MenuItem Header="Создать файл" InputGestureText="Ctrl+N" Command="{Binding CreateFileCommand}"/>
                 <MenuItem Header="Открыть файл" InputGestureText="Ctrl+O" Command="{Binding OpenFileCommand}"/>
                 <Separator/>
                 <MenuItem Header="Сохранить файл" >
                     <MenuItem Header="Сохранить..." InputGestureText="Ctrl+S" Command="{Binding SaveFileCommand}"/>
-                    <MenuItem Header="Сохранить как"/>
+                    <MenuItem Header="Сохранить как" InputGestureText="Ctrl+Shift+S" Command="{Binding SaveAsFileCommand}"/>
                 </MenuItem>
             </MenuItem>
         </Menu>

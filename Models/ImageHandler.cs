@@ -45,7 +45,6 @@ namespace Editty.Models
                     image.Width = originalWidth;
                     image.Height = originalHeight;
                 }
-
                 var insertImageUIContainer = new BlockUIContainer(image);
 
                 if (richTextBox.CaretPosition.Paragraph == null)

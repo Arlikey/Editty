@@ -21,11 +21,77 @@ namespace Editty.Models
 {
     public class FileHandler : IFileHandler
     {
+        public async Task<bool> CreateFileAsync(object parameter, TextDocument document)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog
+            {
+                Filter = "Text File (*.txt)|*.txt|RTF File (*.rtf)|*.rtf|PDF File (*.pdf)|*.pdf",
+                DefaultExt = ".txt"
+            };
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                string filePath = saveFileDialog.FileName;
+                int selectedFilter = saveFileDialog.FilterIndex;
+                string fileExtension = System.IO.Path.GetExtension(filePath).ToLower();
+
+                switch (selectedFilter)
+                {
+                    case 1:
+                        if (fileExtension != ".txt")
+                        {
+                            filePath = System.IO.Path.ChangeExtension(filePath, ".txt");
+                        }
+                        break;
+                    case 2:
+                        if (fileExtension != ".rtf")
+                        {
+                            filePath = System.IO.Path.ChangeExtension(filePath, ".rtf");
+                        }
+                        break;
+                    case 3:
+                        if (fileExtension != ".pdf")
+                        {
+                            filePath = System.IO.Path.ChangeExtension(filePath, ".pdf");
+                        }
+                        break;
+                }
+                fileExtension = System.IO.Path.GetExtension(filePath).ToLower();
+
+                document.Content.Blocks.Clear();
+
+                switch (fileExtension)
+                {
+                    case ".txt":
+                        await SaveTxtFileAsync(filePath, document);
+                        document.FilePath = filePath;
+                        document.FileExtension = fileExtension;
+                        break;
+                    case ".rtf":
+                        await SaveRtfFileAsync(filePath, document);
+                        document.FilePath = filePath;
+                        document.FileExtension = fileExtension;
+                        break;
+                    /*case ".pdf":
+                        await SavePdfFileAsync(filePath, document);
+                        break;*/
+                    default:
+                        MessageBox.Show("Неподдерживаемый формат файла.");
+                        return false;
+                }
+
+                return true;
+            }
+            if (!document.IsOpen)
+            {
+                return false;
+            }
+            return true;
+        }
         public async Task<bool> OpenFileAsync(object parameter, TextDocument document)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog
             {
-                Filter = "All files (*.*)|*.*|Text Files (*.txt)|*.txt|Rich Text Format (*.rtf)|*.rtf|PDF Files (*.pdf)|*.pdf"
+                Filter = "All files (*.txt;*.rtf;*.pdf)|*.txt;*.rtf;*.pdf|Text Files (*.txt)|*.txt|Rich Text Format (*.rtf)|*.rtf|PDF Files (*.pdf)|*.pdf"
             };
             if (openFileDialog.ShowDialog() == true)
             {
@@ -63,7 +129,7 @@ namespace Editty.Models
                 loadingLabel.Visibility = Visibility.Collapsed;
                 return true;
             }
-            if(!document.IsOpen)
+            if (!document.IsOpen)
             {
                 return false;
             }
@@ -136,7 +202,65 @@ namespace Editty.Models
                     break;
             }
         }
+        public async Task<bool> SaveAsFileAsync(TextDocument document)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog
+            {
+                Filter = "Text File (*.txt)|*.txt|RTF File (*.rtf)|*.rtf|PDF File (*.pdf)|*.pdf",
+                DefaultExt = ".txt"
+            };
 
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                string filePath = saveFileDialog.FileName;
+                int selectedFilter = saveFileDialog.FilterIndex;
+                string fileExtension = System.IO.Path.GetExtension(filePath).ToLower();
+
+                switch (selectedFilter)
+                {
+                    case 1:
+                        if (fileExtension != ".txt")
+                        {
+                            filePath = System.IO.Path.ChangeExtension(filePath, ".txt");
+                        }
+                        break;
+                    case 2:
+                        if (fileExtension != ".rtf")
+                        {
+                            filePath = System.IO.Path.ChangeExtension(filePath, ".rtf");
+                        }
+                        break;
+                    case 3:
+                        if (fileExtension != ".pdf")
+                        {
+                            filePath = System.IO.Path.ChangeExtension(filePath, ".pdf");
+                        }
+                        break;
+                }
+
+                switch (System.IO.Path.GetExtension(filePath).ToLower())
+                {
+                    case ".txt":
+                        await SaveTxtFileAsync(filePath, document);
+                        break;
+                    case ".rtf":
+                        await SaveRtfFileAsync(filePath, document);
+                        break;
+                    /*case ".pdf":
+                        await SavePdfFileAsync(filePath, document);
+                        break;*/
+                    default:
+                        MessageBox.Show("Неподдерживаемый формат файла.");
+                        return false;
+                }
+
+                document.FilePath = filePath;
+                document.FileExtension = System.IO.Path.GetExtension(filePath).ToLower();
+
+                return true;
+            }
+            return false;
+        }
         private async Task SaveTxtFileAsync(string filePath, TextDocument document)
         {
             string text = new TextRange(document.Content.ContentStart, document.Content.ContentEnd).Text;
