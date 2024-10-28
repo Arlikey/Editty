@@ -140,7 +140,13 @@ namespace Editty.Models
         {
             string text = await File.ReadAllTextAsync(filePath);
             document.Content.Blocks.Clear();
-            document.Content.Blocks.Add(new Paragraph(new Run(text)));
+            string[] lines = text.Split(Environment.NewLine);
+
+            foreach (string line in lines)
+            {
+                Paragraph paragraph = new Paragraph(new Run(line));
+                document.Content.Blocks.Add(paragraph);
+            }
         }
 
         private async Task OpenRtfFileAsync(string filePath, TextDocument document)

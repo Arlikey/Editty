@@ -2,6 +2,7 @@
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows;
+using static MaterialDesignThemes.Wpf.Theme;
 
 namespace Editty.Models
 {
@@ -28,18 +29,27 @@ namespace Editty.Models
         {
             EditingCommands.ToggleUnderline.Execute(null, _richTextBox);
         }
+        public void ToggleAlignLeft()
+        {
+            EditingCommands.AlignLeft.Execute(null, _richTextBox);
+        }
 
+        public void ToggleAlignCenter()
+        {
+            EditingCommands.AlignCenter.Execute(null, _richTextBox);
+        }
+
+        public void ToggleAlignRight()
+        {
+            EditingCommands.AlignRight.Execute(null, _richTextBox);
+        }
         public void ApplyTextColor(Color color)
         {
             ApplyTextFormatting(TextElement.ForegroundProperty, new SolidColorBrush(color));
         }
-        public void ApplyBackgroundColor(Color color)
+        public void ApplyFontFamily(FontFamily fontFamily)
         {
-            ApplyTextFormatting(TextElement.BackgroundProperty, new SolidColorBrush(color));
-        }
-        public void ApplyFontFamily(string fontFamily)
-        {
-            ApplyTextFormatting(TextElement.FontFamilyProperty, new FontFamily(fontFamily));
+            ApplyTextFormatting(TextElement.FontFamilyProperty, fontFamily);
         }
 
         public void ApplyFontSize(double size)

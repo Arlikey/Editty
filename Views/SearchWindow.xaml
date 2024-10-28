@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Editty.Views"
         mc:Ignorable="d"
-        Title="SearchWindow" Height="160" Width="320" ResizeMode="NoResize">
+        Icon="../images/logo/logo.ico" Title="Поиск" Height="160" Width="320" ResizeMode="NoResize">
     <StackPanel Margin="10">
         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
             <TextBlock Text="Найти:" VerticalAlignment="Center" Margin="0 0 10 0" FontSize="13"/>

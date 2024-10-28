@@ -2,6 +2,7 @@
 using Editty.Models;
 using Editty.UserControls;
 using Editty.Views;
+using iText.IO.Font.Constants;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -29,6 +30,8 @@ namespace Editty.ViewModels
         private ImageHandler _imageHandler;
         private TextFormatter _textFormatter;
         private SearchManager _searchManager;
+
+        public int DefaultFontSize;
         public EditorViewModel(RichTextBox textBox)
         {
             FontFamilies = Fonts.SystemFontFamilies;
@@ -39,6 +42,9 @@ namespace Editty.ViewModels
             _textFormatter = new TextFormatter(textBox);
             _searchManager = new SearchManager(textBox);
 
+            DefaultFontSize = 12;
+            CurrentFontSize = DefaultFontSize;
+
             CreateFileCommand = new RelayCommand(CreateFileAsync);
             OpenFileCommand = new RelayCommand(OpenFileAsync);
             SaveFileCommand = new RelayCommand(SaveFileAsync, CanExecute);
@@ -47,6 +53,12 @@ namespace Editty.ViewModels
             ToggleBoldCommand = new RelayCommand(ApplyBold);
             ToggleItalicCommand = new RelayCommand(ApplyItalic);
             ToggleUnderlineCommand = new RelayCommand(ApplyUnderline);
+            ToggleAlignLeftCommand = new RelayCommand(ApplyAlignLeft);
+            ToggleAlignCenterCommand = new RelayCommand(ApplyAlignCenter);
+            ToggleAlignRightCommand = new RelayCommand(ApplyAlignRight);
+            ApplyFontSizeCommand = new RelayCommand(ApplyFontSize);
+            ChangeTextColorCommand = new RelayCommand(ApplyFontColor);
+            ChangeFontFamilyCommand = new RelayCommand(ApplyFontFamily);
             FindSubstringCommand = new RelayCommand(FindSubstring);
         }
 
@@ -58,6 +70,13 @@ namespace Editty.ViewModels
         public ICommand ToggleBoldCommand { get; }
         public ICommand ToggleItalicCommand { get; }
         public ICommand ToggleUnderlineCommand { get; }
+        public ICommand ToggleAlignLeftCommand { get; }
+        public ICommand ToggleAlignCenterCommand { get; }
+        public ICommand ToggleAlignRightCommand { get; }
+        public ICommand ApplyFontSizeCommand { get; }
+        public ICommand ChangeTextColorCommand { get; }
+        public ICommand ChangeFontSizeCommand { get; }
+        public ICommand ChangeFontFamilyCommand { get; }
         public ICommand FindSubstringCommand { get; }
         public FlowDocument Content
         {
@@ -95,6 +114,121 @@ namespace Editty.ViewModels
                 _isDocumentChanged = value;
                 OnPropertyChanged(nameof(IsDocumentChanged));
                 OnPropertyChanged(nameof(FileName));
+            }
+        }
+        private bool _isBold;
+        public bool IsBold
+        {
+            get => _isBold;
+            set
+            {
+                _isBold = value;
+                OnPropertyChanged(nameof(IsBold));
+            }
+        }
+        private bool _isItalic;
+        public bool IsItalic
+        {
+            get => _isItalic;
+            set
+            {
+                _isItalic = value;
+                OnPropertyChanged(nameof(IsItalic));
+            }
+        }
+        private bool _isUnderline;
+        public bool IsUnderline
+        {
+            get => _isUnderline;
+            set
+            {
+                _isUnderline = value;
+                OnPropertyChanged(nameof(IsUnderline));
+            }
+        }
+        private bool _isAlignedLeft;
+        public bool IsAlignedLeft
+        {
+            get => _isAlignedLeft;
+            set
+            {
+                _isAlignedLeft = value;
+                if (_isAlignedLeft)
+                {
+                    IsAlignedCenter = false;
+                    IsAlignedRight = false;
+                }
+                OnPropertyChanged(nameof(IsAlignedLeft));
+            }
+        }
+        private bool _isAlignedCenter;
+        public bool IsAlignedCenter
+        {
+            get => _isAlignedCenter;
+            set
+            {
+                _isAlignedCenter = value;
+                if (_isAlignedCenter)
+                {
+                    IsAlignedLeft = false;
+                    IsAlignedRight = false;
+                }
+                OnPropertyChanged(nameof(IsAlignedCenter));
+            }
+        }
+        private bool _isAlignedRight;
+        public bool IsAlignedRight
+        {
+            get => _isAlignedRight;
+            set
+            {
+                _isAlignedRight = value;
+                if (_isAlignedRight)
+                {
+                    IsAlignedLeft = false;
+                    IsAlignedCenter = false;
+                }
+                OnPropertyChanged(nameof(IsAlignedRight));
+            }
+        }
+        private double _currentFontSize;
+        public double CurrentFontSize
+        {
+            get => _currentFontSize;
+            set
+            {
+                _currentFontSize = value;
+                OnPropertyChanged(nameof(CurrentFontSize));
+            }
+        }
+        private SolidColorBrush _backgroundColor = Brushes.White;
+        public SolidColorBrush BackgroundColor
+        {
+            get => _backgroundColor;
+            set
+            {
+                _backgroundColor = value;
+                OnPropertyChanged(nameof(BackgroundColor));
+            }
+        }
+        private Color _foregroundColor = Colors.Black;
+        public Color ForegroundColor
+        {
+            get => _foregroundColor;
+            set
+            {
+                _foregroundColor = value;
+                OnPropertyChanged(nameof(ForegroundColor));
+            }
+        }
+        private FontFamily _fontFamily = new FontFamily("Arial");
+        public FontFamily CurrentFontFamily
+        {
+            get => _fontFamily;
+            set
+            {
+                _fontFamily = value;
+                OnPropertyChanged(nameof(CurrentFontFamily));
             }
         }
         private bool CanExecute(object parameter) => DocumentIsOpen;
@@ -145,6 +279,30 @@ namespace Editty.ViewModels
         private void ApplyUnderline(object parameter)
         {
             _textFormatter.ToggleUnderline();
+        }
+        private void ApplyAlignLeft(object parameter)
+        {
+            _textFormatter.ToggleAlignLeft();
+        }
+        private void ApplyAlignCenter(object parameter)
+        {
+            _textFormatter.ToggleAlignCenter();
+        }
+        private void ApplyAlignRight(object parameter)
+        {
+            _textFormatter.ToggleAlignRight();
+        }
+        private void ApplyFontSize(object parameter)
+        {
+            _textFormatter.ApplyFontSize(CurrentFontSize);
+        }
+        private void ApplyFontColor(object parameter)
+        {
+            _textFormatter.ApplyTextColor(ForegroundColor);
+        }
+        private void ApplyFontFamily(object parameter)
+        {
+            _textFormatter.ApplyFontFamily(CurrentFontFamily);
         }
         public event PropertyChangedEventHandler? PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string property = "")

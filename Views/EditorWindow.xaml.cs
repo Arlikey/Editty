@@ -28,6 +28,7 @@ namespace Editty.Views
         public EditorWindow()
         {
             InitializeComponent();
+            textBox.SelectionChanged += TextBox_SelectionChanged;
             _viewModel = new EditorViewModel(textBox);
             this.DataContext = _viewModel;
             mainControl.Content = new TextFormattingControl(_viewModel);
@@ -35,14 +36,45 @@ namespace Editty.Views
             textBox.SelectionBrush = new SolidColorBrush(Color.FromArgb(255, 0, 171, 40));
         }
 
-        private void textBox_GotFocus(object sender, RoutedEventArgs e)
+        private void TextBox_SelectionChanged(object sender, RoutedEventArgs e)
         {
-            AnimationHelper.BackgroundColorFade(textBox, Color.FromArgb(255, 246, 246, 246), 0.25);
-        }
+            var selectedText = textBox.Selection;
+            // Проверка, является ли выделенный текст полужирным
+            var isBold = selectedText.GetPropertyValue(TextElement.FontWeightProperty).Equals(FontWeights.Bold);
+            _viewModel.IsBold = isBold;
 
-        private void textBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-            AnimationHelper.BackgroundColorFade(textBox, Color.FromArgb(255, 255, 255, 255), 0.25);
+            // Проверка, является ли выделенный текст курсивным
+            var isItalic = selectedText.GetPropertyValue(TextElement.FontStyleProperty).Equals(FontStyles.Italic);
+            _viewModel.IsItalic = isItalic;
+
+            // Проверка, является ли выделенный текст подчеркнутым
+            if (selectedText.Start.Paragraph != null && selectedText.Text != "")
+            {
+                var isUnderline = selectedText.GetPropertyValue(Inline.TextDecorationsProperty).Equals(TextDecorations.Underline);
+                _viewModel.IsUnderline = isUnderline;
+            }
+            else
+            {
+                _viewModel.IsUnderline = false;
+            }
+            var isAlignedLeft = selectedText.GetPropertyValue(Paragraph.TextAlignmentProperty).Equals(TextAlignment.Left);
+            _viewModel.IsAlignedLeft = isAlignedLeft;
+
+            // Проверка, является ли выделенный текст курсивным
+            var isAlignedCenter = selectedText.GetPropertyValue(Paragraph.TextAlignmentProperty).Equals(TextAlignment.Center);
+            _viewModel.IsAlignedCenter = isAlignedCenter;
+
+            // Проверка, является ли выделенный текст подчеркнутым
+            var isAlignedRight = selectedText.GetPropertyValue(Paragraph.TextAlignmentProperty).Equals(TextAlignment.Right);
+            _viewModel.IsAlignedRight = isAlignedRight;
+
+            // Получение размера шрифта выделенного текста
+            /*var fontSize = selectedText.GetPropertyValue(TextElement.FontSizeProperty);
+            _viewModel.CurrentFontSize = fontSize is double size ? size : _viewModel.DefaultFontSize;*/
+
+            // Получение цвета текста
+            /*var foreground = selectedText.GetPropertyValue(TextElement.ForegroundProperty) as SolidColorBrush;
+            _viewModel.CurrentTextColor = foreground?.Color ?? Colors.Black;*/
         }
 
         private void textBox_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)

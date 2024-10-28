@@ -90,10 +90,8 @@
                     <RichTextBox x:Name="textBox" Grid.Column="1"
                                  Visibility="{Binding DocumentIsOpen, Converter={StaticResource BooleanToVisibilityConverter}}"
                                  VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible"
-                                 Background="#FFFFFF" Padding="40 20 20 10" MaxWidth="875"
-                                 DataContextChanged="textBox_DataContextChanged" TextChanged="textBox_TextChanged"
-                                 GotFocus="textBox_GotFocus"
-                                 LostFocus="textBox_LostFocus"/>
+                                 Background="{Binding BackgroundColor}" Padding="40 20 20 10" MaxWidth="875"
+                                 DataContextChanged="textBox_DataContextChanged" TextChanged="textBox_TextChanged"/>
                 </Border>
             </Grid>
             <controls:LoadingLabelControl x:Name="loadingLabel" Grid.Column="1" Visibility="Collapsed"></controls:LoadingLabelControl>

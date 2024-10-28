@@ -57,7 +57,7 @@ namespace Editty.Views
             }
             else
             {
-                MessageBox.Show("Please enter a search term.", "Search", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Введите подстроку для поиска.", "Поиск", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
