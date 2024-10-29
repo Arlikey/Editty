@@ -63,6 +63,51 @@ namespace Editty.Views
 
             var isAlignedRight = selectedText.GetPropertyValue(Paragraph.TextAlignmentProperty).Equals(TextAlignment.Right);
             _viewModel.IsAlignedRight = isAlignedRight;
+
+            HashSet<double> fontSizes = new HashSet<double>();
+            HashSet<Color> fontColors = new HashSet<Color>();
+            HashSet<FontFamily> fontFamilies = new HashSet<FontFamily>();
+            TextPointer start = selectedText.Start;
+            TextPointer end = selectedText.End;
+
+            for (TextPointer tp = start; tp.CompareTo(end) < 0; tp = tp.GetNextContextPosition(LogicalDirection.Forward))
+            {
+                if (tp.GetPointerContext(LogicalDirection.Forward) == TextPointerContext.Text)
+                {
+                    var parent = tp.Parent as TextElement;
+                    if (parent != null)
+                    {
+                        var fontSize = parent.GetValue(TextElement.FontSizeProperty);
+                        if (fontSize is double size)
+                        {
+                            fontSizes.Add(size);
+                        }
+                        var fontColor = (parent.GetValue(TextElement.ForegroundProperty) as SolidColorBrush).Color;
+                        if (fontColor != null)
+                        {
+                            fontColors.Add(fontColor);
+                        }
+                        var fontFamily = parent.GetValue(TextElement.FontFamilyProperty) as FontFamily;
+                        if (fontFamily != null)
+                        {
+                            fontFamilies.Add(fontFamily);
+                        }
+                    }
+                }
+            }
+
+            if (fontSizes.Count == 1)
+            {
+                _viewModel.CurrentFontSize = fontSizes.First();
+            }
+            if (fontColors.Count == 1)
+            {
+                _viewModel.ForegroundColor = fontColors.First();
+            }
+            if (fontFamilies.Count == 1)
+            {
+                _viewModel.CurrentFontFamily = fontFamilies.First();
+            }
         }
 
         private void textBox_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)

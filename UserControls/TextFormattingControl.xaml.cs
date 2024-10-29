@@ -52,6 +52,7 @@ namespace Editty.UserControls
                 var selectedColor = colorPicker.SelectedColor;
                 _viewModel.ChangeTextColorCommand.Execute(selectedColor);
             }
+            _viewModel.TextBox.Focus();
         }
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -62,6 +63,7 @@ namespace Editty.UserControls
                 var selectedFamily = comboBox.SelectedItem;
                 _viewModel.ChangeFontFamilyCommand.Execute(selectedFamily);
             }
+            _viewModel.TextBox.Focus();
         }
     }
 }

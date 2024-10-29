@@ -47,10 +47,11 @@ namespace Editty.Views
         private void FadeOut_Completed(object sender, EventArgs e)
         {
             EditorWindow editorWindow = new EditorWindow();
+            Application.Current.MainWindow = editorWindow;
             editorWindow.Show();
 
             DoubleAnimation splashDissapear = new DoubleAnimation(1, 0, TimeSpan.FromSeconds(1));
-            splashDissapear.Completed += (s, ev) => this.Hide();;
+            splashDissapear.Completed += (s, ev) => this.Close();;
             this.BeginAnimation(OpacityProperty, splashDissapear);
         }
 

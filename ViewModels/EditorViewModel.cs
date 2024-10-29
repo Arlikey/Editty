@@ -31,22 +31,24 @@ namespace Editty.ViewModels
         private ListHandler _listHandler;
         private TextFormatter _textFormatter;
         private SearchManager _searchManager;
+        private RichTextBox _richTextBox;
 
         public int DefaultFontSize;
         public IEnumerable<FontFamily> FontFamilies { get; set; }
         public EditorViewModel(RichTextBox textBox)
         {
-            DefaultFontSize = 12;
-            CurrentFontSize = DefaultFontSize;
-            FontFamilies = Fonts.SystemFontFamilies;
-
-            TextBox = textBox;
+            _richTextBox = textBox;
+            TextBox = _richTextBox;
             _document = new TextDocument();
             _fileHandler = new FileHandler();
             _imageHandler = new ImageHandler(textBox);
             _listHandler = new ListHandler(textBox);
             _textFormatter = new TextFormatter(textBox);
             _searchManager = new SearchManager(textBox);
+
+            DefaultFontSize = 12;
+            CurrentFontSize = DefaultFontSize;
+            FontFamilies = Fonts.SystemFontFamilies;
 
 
             CreateFileCommand = new RelayCommand(CreateFileAsync);
@@ -208,6 +210,7 @@ namespace Editty.ViewModels
             {
                 _currentFontSize = value;
                 OnPropertyChanged(nameof(CurrentFontSize));
+                _richTextBox.Selection.ApplyPropertyValue(TextElement.FontSizeProperty, _currentFontSize);
             }
         }
         private SolidColorBrush _backgroundColor = Brushes.White;
@@ -228,6 +231,7 @@ namespace Editty.ViewModels
             {
                 _foregroundColor = value;
                 OnPropertyChanged(nameof(ForegroundColor));
+                _richTextBox.Selection.ApplyPropertyValue(TextElement.ForegroundProperty, new SolidColorBrush(_foregroundColor));
             }
         }
         private FontFamily _fontFamily = new FontFamily("Arial");
@@ -238,6 +242,7 @@ namespace Editty.ViewModels
             {
                 _fontFamily = value;
                 OnPropertyChanged(nameof(CurrentFontFamily));
+                _richTextBox.Selection.ApplyPropertyValue(TextElement.FontFamilyProperty, _fontFamily);
             }
         }
         private bool CanExecute(object parameter) => DocumentIsOpen;

@@ -132,48 +132,69 @@ namespace Editty.Models
 
         public async Task OpenTxtFileAsync(string filePath, TextDocument document)
         {
-            string text = await File.ReadAllTextAsync(filePath);
-            document.Content.Blocks.Clear();
-            string[] lines = text.Split(Environment.NewLine);
-
-            foreach (string line in lines)
+            try
             {
-                Paragraph paragraph = new Paragraph(new Run(line));
-                document.Content.Blocks.Add(paragraph);
+                string text = await File.ReadAllTextAsync(filePath);
+                document.Content.Blocks.Clear();
+                string[] lines = text.Split(Environment.NewLine);
+
+                foreach (string line in lines)
+                {
+                    Paragraph paragraph = new Paragraph(new Run(line));
+                    document.Content.Blocks.Add(paragraph);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Во время открытия файла что-то пошло не так!\nОшибка: {ex.Message}");
             }
         }
 
         public async Task OpenRtfFileAsync(string filePath, TextDocument document)
         {
-            await Task.Run(() =>
+            try
             {
-                using (FileStream rtfStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+                await Task.Run(() =>
                 {
-                    TextRange textRange = new TextRange(document.Content.ContentStart, document.Content.ContentEnd);
-                    Application.Current.Dispatcher.Invoke(() =>
+                    using (FileStream rtfStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
                     {
-                        textRange.Load(rtfStream, DataFormats.Rtf);
-                    });
-                }
-                GC.Collect();
-            });
+                        TextRange textRange = new TextRange(document.Content.ContentStart, document.Content.ContentEnd);
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            textRange.Load(rtfStream, DataFormats.Rtf);
+                        });
+                    }
+                    GC.Collect();
+                });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Во время открытия файла что-то пошло не так!\nОшибка: {ex.Message}");
+            }
         }
 
         public async Task OpenPdfFileAsync(string filePath)
         {
-            var pdfWebBrowser = Application.Current.MainWindow.FindName("pdfWebBrowser") as WebBrowser;
-            if (File.Exists(filePath))
+            try
             {
-                var pdfViewerUrl = new Uri(filePath).AbsoluteUri;
-
-                Application.Current.Dispatcher.Invoke(() =>
+                var pdfWebBrowser = Application.Current.MainWindow.FindName("pdfWebBrowser") as WebBrowser;
+                if (File.Exists(filePath))
                 {
-                    pdfWebBrowser.Source = new Uri(pdfViewerUrl);
-                });
+                    var pdfViewerUrl = new Uri(filePath).AbsoluteUri;
+
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        pdfWebBrowser.Source = new Uri(pdfViewerUrl);
+                    });
+                }
+                else
+                {
+                    MessageBox.Show("Во время загрузки файла произошла ошибка.");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Во время загрузки файла произошла ошибка.");
+                MessageBox.Show($"Во время открытия файла что-то пошло не так!\nОшибка: {ex.Message}");
             }
         }
 

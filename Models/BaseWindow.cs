@@ -18,14 +18,9 @@ namespace Editty.Models
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
             Width = 1200;
             Height = 800;
-            Closed += BaseWindow_Closed;
             Title = "Eddity";
             Icon = new BitmapImage(new Uri("pack://application:,,,/images/logo/logo.ico"));
         }
 
-        private void BaseWindow_Closed(object? sender, EventArgs e)
-        {
-            Environment.Exit(0);
-        }
     }
 }
