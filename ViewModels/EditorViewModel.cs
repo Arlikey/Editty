@@ -18,6 +18,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
+using static MaterialDesignThemes.Wpf.Theme;
 
 namespace Editty.ViewModels
 {
@@ -110,6 +111,7 @@ namespace Editty.ViewModels
             {
                 _document.FileName = value;
                 OnPropertyChanged(nameof(FileName));
+                UpdateDocumentView();
             }
         }
         private bool _isDocumentChanged;
@@ -248,6 +250,7 @@ namespace Editty.ViewModels
         private async void OpenFileAsync(object parameter)
         {
             DocumentIsOpen = await _fileHandler.OpenFileAsync(parameter, _document);
+            FileName = _document.FileName;
             IsDocumentChanged = false;
         }
         private async void SaveFileAsync(object parameter)
@@ -313,6 +316,26 @@ namespace Editty.ViewModels
         private void ApplyFontFamily(object parameter)
         {
             _textFormatter.ApplyFontFamily(CurrentFontFamily);
+        }
+        private void UpdateDocumentView()
+        {
+            // Здесь вы можете проверить расширение файла и скрыть или показать нужные элементы
+            var fileExtension = _document.FileExtension;
+            var pdfWebBrowser = Application.Current.MainWindow.FindName("pdfWebBrowser") as WebBrowser;
+            if (fileExtension == ".pdf")
+            {
+                // Показываем WebBrowser и скрываем RichTextBox
+                pdfWebBrowser.Visibility = Visibility.Visible;
+                TextBox.Visibility = Visibility.Collapsed;
+                pdfWebBrowser.Navigate(new Uri(_document.FilePath)); // Загружаем PDF
+            }
+            else if (fileExtension == ".txt" || fileExtension == ".rtf")
+            {
+                // Показываем RichTextBox и скрываем WebBrowser
+                TextBox.Visibility = Visibility.Visible;
+                pdfWebBrowser.Visibility = Visibility.Collapsed;
+                // Здесь добавьте логику для загрузки текста в RichTextBox
+            }
         }
         public event PropertyChangedEventHandler? PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string property = "")

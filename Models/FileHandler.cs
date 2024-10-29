@@ -26,7 +26,7 @@ namespace Editty.Models
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog
             {
-                Filter = "Text File (*.txt)|*.txt|RTF File (*.rtf)|*.rtf|PDF File (*.pdf)|*.pdf",
+                Filter = "Text File (*.txt)|*.txt|RTF File (*.rtf)|*.rtf",
                 DefaultExt = ".txt"
             };
             if (saveFileDialog.ShowDialog() == true)
@@ -49,12 +49,6 @@ namespace Editty.Models
                             filePath = System.IO.Path.ChangeExtension(filePath, ".rtf");
                         }
                         break;
-                    case 3:
-                        if (fileExtension != ".pdf")
-                        {
-                            filePath = System.IO.Path.ChangeExtension(filePath, ".pdf");
-                        }
-                        break;
                 }
                 fileExtension = System.IO.Path.GetExtension(filePath).ToLower();
 
@@ -72,9 +66,6 @@ namespace Editty.Models
                         document.FilePath = filePath;
                         document.FileExtension = fileExtension;
                         break;
-                    /*case ".pdf":
-                        await SavePdfFileAsync(filePath, document);
-                        break;*/
                     default:
                         MessageBox.Show("Неподдерживаемый формат файла.");
                         return false;
@@ -121,6 +112,8 @@ namespace Editty.Models
                         break;
                     case ".pdf":
                         await OpenPdfFileAsync(filePath, document);
+                        document.FilePath = filePath;
+                        document.FileExtension = fileExtension;
                         break;
                     default:
                         MessageBox.Show("Неподдерживаемый формат файла.");
@@ -168,27 +161,20 @@ namespace Editty.Models
 
         public async Task OpenPdfFileAsync(string filePath, TextDocument document)
         {
-            StringBuilder pdfText = new StringBuilder();
-            await Task.Run(() =>
+            var pdfWebBrowser = Application.Current.MainWindow.FindName("pdfWebBrowser") as WebBrowser;
+            if (File.Exists(filePath))
             {
-                using (PdfReader pdfReader = new PdfReader(filePath))
-                {
-                    using (PdfDocument pdfDocument = new PdfDocument(pdfReader))
-                    {
-                        for (int page = 1; page <= pdfDocument.GetNumberOfPages(); page++)
-                        {
-                            string currentText = PdfTextExtractor.GetTextFromPage(pdfDocument.GetPage(page));
-                            pdfText.AppendLine(currentText);
-                        }
-                    }
-                }
+                var pdfViewerUrl = new Uri(filePath).AbsoluteUri;
 
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    document.Content.Blocks.Clear();
-                    document.Content.Blocks.Add(new Paragraph(new Run(pdfText.ToString())));
+                    pdfWebBrowser.Source = new Uri(pdfViewerUrl);
                 });
-            });
+            }
+            else
+            {
+                MessageBox.Show("Во время загрузки файла произошла ошибка.");
+            }
         }
 
         public async Task SaveFileAsync(TextDocument document)
@@ -201,9 +187,6 @@ namespace Editty.Models
                 case ".rtf":
                     await SaveRtfFileAsync(document.FilePath, document);
                     break;
-                /*case ".pdf":
-                    await SavePdfFileAsync(filePath, document);
-                    break;*/
                 default:
                     MessageBox.Show("Неподдерживаемый формат файла.");
                     break;
@@ -213,7 +196,7 @@ namespace Editty.Models
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog
             {
-                Filter = "Text File (*.txt)|*.txt|RTF File (*.rtf)|*.rtf|PDF File (*.pdf)|*.pdf",
+                Filter = "Text File (*.txt)|*.txt|RTF File (*.rtf)|*.rtf",
                 DefaultExt = ".txt"
             };
 
@@ -237,12 +220,6 @@ namespace Editty.Models
                             filePath = System.IO.Path.ChangeExtension(filePath, ".rtf");
                         }
                         break;
-                    case 3:
-                        if (fileExtension != ".pdf")
-                        {
-                            filePath = System.IO.Path.ChangeExtension(filePath, ".pdf");
-                        }
-                        break;
                 }
 
                 switch (System.IO.Path.GetExtension(filePath).ToLower())
@@ -253,9 +230,6 @@ namespace Editty.Models
                     case ".rtf":
                         await SaveRtfFileAsync(filePath, document);
                         break;
-                    /*case ".pdf":
-                        await SavePdfFileAsync(filePath, document);
-                        break;*/
                     default:
                         MessageBox.Show("Неподдерживаемый формат файла.");
                         return false;
@@ -285,23 +259,6 @@ namespace Editty.Models
                     {
                         textRange.Save(rtfStream, DataFormats.Rtf);
                     });
-                }
-            });
-        }
-
-        public async Task SavePdfFileAsync(string filePath, TextDocument document)
-        {
-            await Task.Run(() =>
-            {
-                using (PdfWriter writer = new PdfWriter(filePath))
-                using (PdfDocument pdfDoc = new PdfDocument(writer))
-                {
-                    Document pdfDocument = new Document(pdfDoc);
-                    string text = new TextRange(document.Content.ContentStart, document.Content.ContentEnd).Text;
-
-                    //pdfDocument.Add(new Paragraph(new Run(text)));
-
-                    pdfDocument.Close();
                 }
             });
         }
