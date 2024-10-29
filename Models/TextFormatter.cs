@@ -3,10 +3,11 @@ using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows;
 using static MaterialDesignThemes.Wpf.Theme;
+using Editty.Interfaces;
 
 namespace Editty.Models
 {
-    public class TextFormatter
+    public class TextFormatter : ITextFormatter
     {
         private readonly RichTextBox _richTextBox;
 
@@ -57,7 +58,7 @@ namespace Editty.Models
             ApplyTextFormatting(TextElement.FontSizeProperty, size);
         }
 
-        private void ApplyTextFormatting(DependencyProperty property, object value)
+        public void ApplyTextFormatting(DependencyProperty property, object value)
         {
             var selectedText = _richTextBox.Selection;
             if (!selectedText.IsEmpty)

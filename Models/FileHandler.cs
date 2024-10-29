@@ -16,6 +16,7 @@ using System.Windows.Threading;
 using static MaterialDesignThemes.Wpf.Theme;
 using Paragraph = System.Windows.Documents.Paragraph;
 using Run = System.Windows.Documents.Run;
+using iText.Layout;
 
 namespace Editty.Models
 {
@@ -136,7 +137,7 @@ namespace Editty.Models
             return true;
         }
 
-        private async Task OpenTxtFileAsync(string filePath, TextDocument document)
+        public async Task OpenTxtFileAsync(string filePath, TextDocument document)
         {
             string text = await File.ReadAllTextAsync(filePath);
             document.Content.Blocks.Clear();
@@ -149,7 +150,7 @@ namespace Editty.Models
             }
         }
 
-        private async Task OpenRtfFileAsync(string filePath, TextDocument document)
+        public async Task OpenRtfFileAsync(string filePath, TextDocument document)
         {
             await Task.Run(() =>
             {
@@ -165,7 +166,7 @@ namespace Editty.Models
             });
         }
 
-        private async Task OpenPdfFileAsync(string filePath, TextDocument document)
+        public async Task OpenPdfFileAsync(string filePath, TextDocument document)
         {
             StringBuilder pdfText = new StringBuilder();
             await Task.Run(() =>
@@ -267,13 +268,13 @@ namespace Editty.Models
             }
             return false;
         }
-        private async Task SaveTxtFileAsync(string filePath, TextDocument document)
+        public async Task SaveTxtFileAsync(string filePath, TextDocument document)
         {
             string text = new TextRange(document.Content.ContentStart, document.Content.ContentEnd).Text;
             await File.WriteAllTextAsync(filePath, text);
         }
 
-        private async Task SaveRtfFileAsync(string filePath, TextDocument document)
+        public async Task SaveRtfFileAsync(string filePath, TextDocument document)
         {
             await Task.Run(() =>
             {
@@ -288,7 +289,7 @@ namespace Editty.Models
             });
         }
 
-        /*private async Task SavePdfFileAsync(string filePath, TextDocument document)
+        public async Task SavePdfFileAsync(string filePath, TextDocument document)
         {
             await Task.Run(() =>
             {
@@ -296,13 +297,13 @@ namespace Editty.Models
                 using (PdfDocument pdfDoc = new PdfDocument(writer))
                 {
                     Document pdfDocument = new Document(pdfDoc);
-                    string text = new TextRange(document.ContentStart, document.ContentEnd).Text;
+                    string text = new TextRange(document.Content.ContentStart, document.Content.ContentEnd).Text;
 
-                    pdfDocument.Add(new Paragraph(text));
+                    //pdfDocument.Add(new Paragraph(new Run(text)));
 
                     pdfDocument.Close();
                 }
             });
-        }*/
+        }
     }
 }

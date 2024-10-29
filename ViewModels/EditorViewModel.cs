@@ -23,27 +23,30 @@ namespace Editty.ViewModels
 {
     public class EditorViewModel : INotifyPropertyChanged
     {
-        public IEnumerable<FontFamily> FontFamilies { get; set; }
 
         private TextDocument _document;
         private FileHandler _fileHandler;
         private ImageHandler _imageHandler;
+        private ListHandler _listHandler;
         private TextFormatter _textFormatter;
         private SearchManager _searchManager;
 
         public int DefaultFontSize;
+        public IEnumerable<FontFamily> FontFamilies { get; set; }
         public EditorViewModel(RichTextBox textBox)
         {
+            DefaultFontSize = 12;
+            CurrentFontSize = DefaultFontSize;
             FontFamilies = Fonts.SystemFontFamilies;
+
             TextBox = textBox;
             _document = new TextDocument();
             _fileHandler = new FileHandler();
-            _imageHandler = new ImageHandler();
+            _imageHandler = new ImageHandler(textBox);
+            _listHandler = new ListHandler(textBox);
             _textFormatter = new TextFormatter(textBox);
             _searchManager = new SearchManager(textBox);
 
-            DefaultFontSize = 12;
-            CurrentFontSize = DefaultFontSize;
 
             CreateFileCommand = new RelayCommand(CreateFileAsync);
             OpenFileCommand = new RelayCommand(OpenFileAsync);
@@ -59,6 +62,8 @@ namespace Editty.ViewModels
             ApplyFontSizeCommand = new RelayCommand(ApplyFontSize);
             ChangeTextColorCommand = new RelayCommand(ApplyFontColor);
             ChangeFontFamilyCommand = new RelayCommand(ApplyFontFamily);
+            CreateOrderedListCommand = new RelayCommand(CreateOrderedList, CanExecute);
+            CreateUnorderedListCommand = new RelayCommand(CreateUnorderedList, CanExecute);
             FindSubstringCommand = new RelayCommand(FindSubstring);
         }
 
@@ -77,6 +82,8 @@ namespace Editty.ViewModels
         public ICommand ChangeTextColorCommand { get; }
         public ICommand ChangeFontSizeCommand { get; }
         public ICommand ChangeFontFamilyCommand { get; }
+        public ICommand CreateOrderedListCommand { get; }
+        public ICommand CreateUnorderedListCommand { get; }
         public ICommand FindSubstringCommand { get; }
         public FlowDocument Content
         {
@@ -255,12 +262,15 @@ namespace Editty.ViewModels
         }
         private void InsertImage(object parameter)
         {
-            if (parameter is RichTextBox richTextBox)
-            {
-                {
-                    _imageHandler.InsertImage(TextBox);
-                }
-            }
+            _imageHandler.InsertImage();
+        }
+        private void CreateOrderedList(object parameter)
+        {
+            _listHandler.CreateOrderedList();
+        }
+        private void CreateUnorderedList(object parameter)
+        {
+            _listHandler.CreateUnorderedList();
         }
         private void FindSubstring(object parameter)
         {

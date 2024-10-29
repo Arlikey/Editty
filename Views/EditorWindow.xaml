@@ -19,6 +19,7 @@
         <KeyBinding Key="S" Modifiers="Ctrl" Command="{Binding SaveFileCommand}"></KeyBinding>
         <KeyBinding Key="N" Modifiers="Ctrl" Command="{Binding CreateFileCommand}"></KeyBinding>
         <KeyBinding Key="S" Modifiers="Ctrl+Shift" Command="{Binding SaveAsFileCommand}"></KeyBinding>
+        <KeyBinding Key="F" Modifiers="Ctrl" Command="{Binding FindSubstringCommand}"></KeyBinding>
     </Window.InputBindings>
     <Grid Background="#f1f1f1">
         <Grid.RowDefinitions>
@@ -36,7 +37,8 @@
                     <MenuItem Header="Сохранить как" InputGestureText="Ctrl+Shift+S" Command="{Binding SaveAsFileCommand}"/>
                 </MenuItem>
             </MenuItem>
-            <MenuItem Header="Поиск" Height="30" Command="{Binding FindSubstringCommand}"></MenuItem>
+            <Separator/>
+            <MenuItem Header="Поиск" Height="30" InputGestureText="Ctrl+F" Command="{Binding FindSubstringCommand}"></MenuItem>
         </Menu>
         <ToolBarTray Grid.Row="1" IsLocked="True">
             <ToolBar>
@@ -87,7 +89,7 @@
                     <Border.Effect>
                         <DropShadowEffect BlurRadius="8" ShadowDepth="0" Color="LightGray"/>
                     </Border.Effect>
-                    <RichTextBox x:Name="textBox" Grid.Column="1"
+                    <RichTextBox x:Name="textBox" Grid.Column="1" AcceptsTab="True"
                                  Visibility="{Binding DocumentIsOpen, Converter={StaticResource BooleanToVisibilityConverter}}"
                                  VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible"
                                  Background="{Binding BackgroundColor}" Padding="40 20 20 10" MaxWidth="875"

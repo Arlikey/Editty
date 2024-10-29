@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using Editty.Interfaces;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +14,15 @@ using System.Windows.Media.Imaging;
 
 namespace Editty.Models
 {
-    public class ImageHandler
+    public class ImageHandler : IImageHandler
     {
         double maxImageWidth = 550;
-        public void InsertImage(RichTextBox richTextBox)
+        private RichTextBox _richTextBox;
+        public ImageHandler(RichTextBox richTextBox)
+        {
+            _richTextBox = richTextBox;
+        }
+        public void InsertImage()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog
             {
@@ -47,17 +53,17 @@ namespace Editty.Models
                 }
                 var insertImageUIContainer = new BlockUIContainer(image);
 
-                if (richTextBox.CaretPosition.Paragraph == null)
+                if (_richTextBox.CaretPosition.Paragraph == null)
                 {
                     var newParagraph = new Paragraph();
-                    richTextBox.Document.Blocks.Add(newParagraph);
-                    richTextBox.CaretPosition = newParagraph.ContentEnd;
+                    _richTextBox.Document.Blocks.Add(newParagraph);
+                    _richTextBox.CaretPosition = newParagraph.ContentEnd;
                 }
 
                 try
                 {
-                    richTextBox.Document.Blocks.InsertAfter(richTextBox.CaretPosition.Paragraph, insertImageUIContainer);
-                    richTextBox.CaretPosition = insertImageUIContainer.ContentEnd;
+                    _richTextBox.Document.Blocks.InsertAfter(_richTextBox.CaretPosition.Paragraph, insertImageUIContainer);
+                    _richTextBox.CaretPosition = insertImageUIContainer.ContentEnd;
                 }
                 catch (Exception ex)
                 {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Editty.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ using System.Windows.Media;
 
 namespace Editty.Models
 {
-    public class SearchManager
+    public class SearchManager : ISearchManager
     {
         private readonly RichTextBox _richTextBox;
         private List<TextRange> _foundRanges;
@@ -67,7 +68,7 @@ namespace Editty.Models
             SelectCurrentMatch();
         }
 
-        private void SelectCurrentMatch()
+        public void SelectCurrentMatch()
         {
             var currentRange = _foundRanges[_currentMatchIndex];
             _richTextBox.Selection.Select(currentRange.Start, currentRange.End);

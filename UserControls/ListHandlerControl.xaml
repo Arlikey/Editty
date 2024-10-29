@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="Editty.UserControls.ListHandlerControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Editty.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <StackPanel FocusManager.IsFocusScope="True">
+            <Button Height="70" Width="100" Background="Transparent" BorderBrush="Gray" Margin="0 15 0 0"
+                    Command="{Binding CreateOrderedListCommand}">
+                <Button.ToolTip>Создать нумерованный список</Button.ToolTip>
+                <Image Source="../images/icons/numbering-list.png" Width="50"/>
+            </Button>
+            <Button Height="70" Width="100" Background="Transparent" BorderBrush="Gray" Margin="0 15 0 0"
+                    Command="{Binding CreateUnorderedListCommand}">
+                <Button.ToolTip>Создать ненумерованный список</Button.ToolTip>
+                <Image Source="../images/icons/bullets-list.png" Width="50"/>
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

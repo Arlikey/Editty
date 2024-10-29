@@ -39,15 +39,13 @@ namespace Editty.Views
         private void TextBox_SelectionChanged(object sender, RoutedEventArgs e)
         {
             var selectedText = textBox.Selection;
-            // Проверка, является ли выделенный текст полужирным
+
             var isBold = selectedText.GetPropertyValue(TextElement.FontWeightProperty).Equals(FontWeights.Bold);
             _viewModel.IsBold = isBold;
 
-            // Проверка, является ли выделенный текст курсивным
             var isItalic = selectedText.GetPropertyValue(TextElement.FontStyleProperty).Equals(FontStyles.Italic);
             _viewModel.IsItalic = isItalic;
 
-            // Проверка, является ли выделенный текст подчеркнутым
             if (selectedText.Start.Paragraph != null && selectedText.Text != "")
             {
                 var isUnderline = selectedText.GetPropertyValue(Inline.TextDecorationsProperty).Equals(TextDecorations.Underline);
@@ -60,21 +58,11 @@ namespace Editty.Views
             var isAlignedLeft = selectedText.GetPropertyValue(Paragraph.TextAlignmentProperty).Equals(TextAlignment.Left);
             _viewModel.IsAlignedLeft = isAlignedLeft;
 
-            // Проверка, является ли выделенный текст курсивным
             var isAlignedCenter = selectedText.GetPropertyValue(Paragraph.TextAlignmentProperty).Equals(TextAlignment.Center);
             _viewModel.IsAlignedCenter = isAlignedCenter;
 
-            // Проверка, является ли выделенный текст подчеркнутым
             var isAlignedRight = selectedText.GetPropertyValue(Paragraph.TextAlignmentProperty).Equals(TextAlignment.Right);
             _viewModel.IsAlignedRight = isAlignedRight;
-
-            // Получение размера шрифта выделенного текста
-            /*var fontSize = selectedText.GetPropertyValue(TextElement.FontSizeProperty);
-            _viewModel.CurrentFontSize = fontSize is double size ? size : _viewModel.DefaultFontSize;*/
-
-            // Получение цвета текста
-            /*var foreground = selectedText.GetPropertyValue(TextElement.ForegroundProperty) as SolidColorBrush;
-            _viewModel.CurrentTextColor = foreground?.Color ?? Colors.Black;*/
         }
 
         private void textBox_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -87,7 +75,7 @@ namespace Editty.Views
 
         private void listHandlerButton_Click(object sender, RoutedEventArgs e)
         {
-
+            mainControl.Content = new ListHandlerControl();
         }
 
         private void mediaHandlerButton_Click(object sender, RoutedEventArgs e)

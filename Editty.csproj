@@ -15,10 +15,12 @@
     <None Remove="images\icons\align-left.png" />
     <None Remove="images\icons\align-right.png" />
     <None Remove="images\icons\back.png" />
+    <None Remove="images\icons\bullets-list.png" />
     <None Remove="images\icons\image-group.png" />
     <None Remove="images\icons\list-group.png" />
     <None Remove="images\icons\list.png" />
     <None Remove="images\icons\next.png" />
+    <None Remove="images\icons\numbering-list.png" />
     <None Remove="images\icons\search.png" />
     <None Remove="images\icons\text-group.png" />
     <None Remove="images\icons\text.png" />
@@ -39,9 +41,11 @@
     <Resource Include="images\icons\align-left.png" />
     <Resource Include="images\icons\align-right.png" />
     <Resource Include="images\icons\back.png" />
+    <Resource Include="images\icons\bullets-list.png" />
     <Resource Include="images\icons\image-group.png" />
     <Resource Include="images\icons\list-group.png" />
     <Resource Include="images\icons\next.png" />
+    <Resource Include="images\icons\numbering-list.png" />
     <Resource Include="images\icons\search.png" />
     <Resource Include="images\icons\text-group.png" />
     <Resource Include="images\logo\logo.ico" />
