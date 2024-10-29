@@ -111,7 +111,7 @@ namespace Editty.Models
                         document.FileExtension = fileExtension;
                         break;
                     case ".pdf":
-                        await OpenPdfFileAsync(filePath, document);
+                        await OpenPdfFileAsync(filePath);
                         document.FilePath = filePath;
                         document.FileExtension = fileExtension;
                         break;
@@ -159,7 +159,7 @@ namespace Editty.Models
             });
         }
 
-        public async Task OpenPdfFileAsync(string filePath, TextDocument document)
+        public async Task OpenPdfFileAsync(string filePath)
         {
             var pdfWebBrowser = Application.Current.MainWindow.FindName("pdfWebBrowser") as WebBrowser;
             if (File.Exists(filePath))

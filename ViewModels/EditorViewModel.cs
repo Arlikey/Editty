@@ -319,22 +319,18 @@ namespace Editty.ViewModels
         }
         private void UpdateDocumentView()
         {
-            // Здесь вы можете проверить расширение файла и скрыть или показать нужные элементы
             var fileExtension = _document.FileExtension;
             var pdfWebBrowser = Application.Current.MainWindow.FindName("pdfWebBrowser") as WebBrowser;
             if (fileExtension == ".pdf")
             {
-                // Показываем WebBrowser и скрываем RichTextBox
                 pdfWebBrowser.Visibility = Visibility.Visible;
                 TextBox.Visibility = Visibility.Collapsed;
-                pdfWebBrowser.Navigate(new Uri(_document.FilePath)); // Загружаем PDF
+                pdfWebBrowser.Navigate(new Uri(_document.FilePath));
             }
             else if (fileExtension == ".txt" || fileExtension == ".rtf")
             {
-                // Показываем RichTextBox и скрываем WebBrowser
                 TextBox.Visibility = Visibility.Visible;
                 pdfWebBrowser.Visibility = Visibility.Collapsed;
-                // Здесь добавьте логику для загрузки текста в RichTextBox
             }
         }
         public event PropertyChangedEventHandler? PropertyChanged;

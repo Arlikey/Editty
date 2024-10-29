@@ -14,6 +14,7 @@ namespace Editty.Interfaces
         public Task<bool> OpenFileAsync(object parameter, TextDocument document);
         public Task OpenTxtFileAsync(string filePath, TextDocument document);
         public Task OpenRtfFileAsync(string filePath, TextDocument document);
+        public Task OpenPdfFileAsync(string filePath);
         public Task SaveFileAsync(TextDocument document);
         public Task<bool> SaveAsFileAsync(TextDocument document);
         public Task SaveTxtFileAsync(string filePath, TextDocument document);
